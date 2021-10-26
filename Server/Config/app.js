@@ -38,7 +38,7 @@ const app = (0, express_1.default)();
 exports.default = app;
 //DB configuration
 const DBConfig = __importStar(require("./db"));
-mongoose_1.default.connect((DBConfig.RemoteURI) ? DBConfig.RemoteURI : DBConfig.LocalURI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose_1.default.connect((DBConfig.RemoteURI) ? DBConfig.RemoteURI : DBConfig.LocalURI);
 const db = mongoose_1.default.connection; //alias for the mongoose connection
 db.on("error", function () {
     console.error("Connection error");
