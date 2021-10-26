@@ -1,0 +1,10 @@
+{
+
+    "games":
+    [
+        { "name": "Red Dead Redemption 2", "genre": "Action Adventure", "developer": "RockStar", "Cost": 79.99 },
+        { "name": "Dark Souls III", "genre": "Fantasy Adventure", "developer": "From Software", "Cost": 66.49 },
+        { "name": "Fallout 4", "genre": "Sci-Fi RPG", "developer": "Bethesda", "Cost": 26.99 }
+    ]
+
+}
