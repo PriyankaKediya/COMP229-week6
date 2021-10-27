@@ -57,7 +57,34 @@ export function DisplayLoginPage(req: Request, res: Response, next: NextFunction
 
 export function ProcessLoginPage(req: Request, res: Response, next: NextFunction): void
 {
+    passport.authenticate('local', (err, user, info) =>
+    {
+        //are there any server errors?
+        if(err)
+        {
+            console.error(err);
+            return next(err);
+        }
 
+        //are there any login errors?
+        if(!user)
+        {
+            req.flash('loginMessage', 'Authentication Error');
+            return res.redirect('./login');
+        }
+
+        req.login(user, (err) =>
+        {
+            //are there any db errors?
+            if(err)
+            {
+                console.error(err);
+                return next(err);
+            }
+
+            return res.redirect('/games-list');
+        });
+    }) (req, res, next);
 }
 
 export function DisplayRegisterPage(req: Request, res: Response, next: NextFunction): void
@@ -74,6 +101,8 @@ export function ProcessRegisterPage(req: Request, res: Response, next: NextFunct
         emailAddress: req.body.emailAddress,
         displayName: req.body.firstName + " " + req.body.lastName
     });
+
+    console.log(newUser);
 
     User.register(newUser, req.body.password, (err) =>
     {

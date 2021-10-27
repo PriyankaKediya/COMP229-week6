@@ -46,6 +46,26 @@ function DisplayLoginPage(req, res, next) {
 }
 exports.DisplayLoginPage = DisplayLoginPage;
 function ProcessLoginPage(req, res, next) {
+    passport_1.default.authenticate('local', (err, user, info) => {
+        //are there any server errors?
+        if (err) {
+            console.error(err);
+            return next(err);
+        }
+        //are there any login errors?
+        if (!user) {
+            req.flash('loginMessage', 'Authentication Error');
+            return res.redirect('./login');
+        }
+        req.login(user, (err) => {
+            //are there any db errors?
+            if (err) {
+                console.error(err);
+                return next(err);
+            }
+            return res.redirect('/games-list');
+        });
+    })(req, res, next);
 }
 exports.ProcessLoginPage = ProcessLoginPage;
 function DisplayRegisterPage(req, res, next) {
@@ -59,6 +79,7 @@ function ProcessRegisterPage(req, res, next) {
         emailAddress: req.body.emailAddress,
         displayName: req.body.firstName + " " + req.body.lastName
     });
+    console.log(newUser);
     user_1.default.register(newUser, req.body.password, (err) => {
         if (err) {
             console.error('Error: Inserting New User');
