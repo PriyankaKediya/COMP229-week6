@@ -1,5 +1,10 @@
 import express, {Request, Response, NextFunction} from 'express';
 
+import passport from 'passport';
+
+// create an instance of the user model
+import User from '../Models/user';
+
 //get a reference to the Game Model Class
 import Game from '../Models/game';
 
@@ -43,13 +48,58 @@ export function DisplayGamesListPage(req: Request, res: Response, next: NextFunc
  
   });
 }
+/* functions for authentication */
 
-export function DisplayLoginPage(req: Request, res: Response, next: NextFunction)
+export function DisplayLoginPage(req: Request, res: Response, next: NextFunction): void
 {
     res.render('index', { title: 'Login', page: 'login'});
 }
 
-export function DisplayRegisterPage(req: Request, res: Response, next: NextFunction)
+export function ProcessLoginPage(req: Request, res: Response, next: NextFunction): void
+{
+
+}
+
+export function DisplayRegisterPage(req: Request, res: Response, next: NextFunction): void
 {
     res.render('index', { title: 'Register', page: 'register'});
+}
+
+export function ProcessRegisterPage(req: Request, res: Response, next: NextFunction): void
+{
+    //instantiate a new user object
+    let newUser = new User
+    ({
+        username: req.body.username,
+        emailAddress: req.body.emailAddress,
+        displayName: req.body.firstName + " " + req.body.lastName
+    });
+
+    User.register(newUser, req.body.password, (err) =>
+    {
+        if(err)
+        {
+            console.error('Error: Inserting New User');
+            if(err.name == "UserExistsError")
+            {
+                console.error('Error: User Already Exists');
+            }
+            req.flash('registerMessage', 'Registration Error');
+
+            return res.redirect('/register');
+        }
+
+        //after successful registration - let's login the user
+        return passport.authenticate('local')(req,res, () =>
+        {
+            return res.redirect('/games-list');
+        })
+
+    })
+}
+
+export function ProcessLogoutPage(req: Request, res: Response, next: NextFunction): void
+{
+    req.logout();
+    res.redirect('/login');
 }

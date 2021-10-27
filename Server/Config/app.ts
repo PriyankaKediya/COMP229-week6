@@ -1,7 +1,7 @@
 /*
 * Author     : Priyanka kediya
 * Date       : September 20, 2021
-* Description: Demo Project for COMP229-F2021-Lesson5
+* Description: Demo Project for COMP229-F2021-Lesson
 */
 
 import createError from 'http-errors';
@@ -10,6 +10,22 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+// authentication modules
+import session from 'express-session';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+
+//module for cors
+import cors from 'cors';
+
+//authentication objects
+let localStrategy = passportLocal.Strategy;
+import User from '../Models/user';
+
+//module for auth messaging and error management
+import flash from 'connect-flash';
+
+// module for database setup
 import mongoose, {mongo } from 'mongoose';
 
 import indexRouter from '../Routes/index';
@@ -43,6 +59,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../Client')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
+
+// add support for cors object
+app.use(cors());
+
+//setup express session
+app.use(session({
+  secret: DBConfig.Secret,
+  saveUninitialized: false,
+  resave: false
+}));
+
+//initialize connect-flash
+app.use(flash());
+
+//initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//implement an auth strategy - "local" - username / password
+passport.use(User.createStrategy());
+
+// serialize and deserialize user data
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use('/', indexRouter);
 
