@@ -4,7 +4,7 @@ export default router;
 
 
 //instantiate an object of type index controller
-import { DisplayAboutPage, DisplayContactPage, DisplayGamesListPage, DisplayHomePage, DisplayLoginPage, DisplayProjectsPage, DisplayRegisterPage, DisplayServicesPage } from '../Controllers/index';
+import { DisplayAboutPage, DisplayContactPage, DisplayGamesListPage, DisplayHomePage, DisplayLoginPage, DisplayProjectsPage, DisplayServicesPage } from '../Controllers/index';
 
 
 /* GET home page. */
@@ -25,12 +25,11 @@ router.get('/services', DisplayServicesPage);
 /* GET contact page. */
 router.get('/contact', DisplayContactPage);
 
+
 /*GET games list */
 router.get('/games-list', DisplayGamesListPage);
 
 /*GET login page */
 router.get('/login', DisplayLoginPage);
 
-/*GET login page */
-router.get('/register', DisplayRegisterPage);
 //module.exports = router;

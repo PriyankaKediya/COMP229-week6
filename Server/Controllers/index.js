@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DisplayGamesListPage = exports.DisplayContactPage = exports.DisplayServicesPage = exports.DisplayProjectsPage = exports.DisplayAboutPage = exports.DisplayHomePage = void 0;
+exports.DisplayRegisterPage = exports.DisplayLoginPage = exports.DisplayGamesListPage = exports.DisplayContactPage = exports.DisplayServicesPage = exports.DisplayProjectsPage = exports.DisplayAboutPage = exports.DisplayHomePage = void 0;
 //get a reference to the Game Model Class
 const game_1 = __importDefault(require("../Models/game"));
 function DisplayHomePage(req, res, next) {
@@ -37,4 +37,12 @@ function DisplayGamesListPage(req, res, next) {
     });
 }
 exports.DisplayGamesListPage = DisplayGamesListPage;
+function DisplayLoginPage(req, res, next) {
+    res.render('index', { title: 'Login', page: 'login' });
+}
+exports.DisplayLoginPage = DisplayLoginPage;
+function DisplayRegisterPage(req, res, next) {
+    res.render('index', { title: 'Register', page: 'register' });
+}
+exports.DisplayRegisterPage = DisplayRegisterPage;
 //# sourceMappingURL=index.js.map
